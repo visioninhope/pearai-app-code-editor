@@ -86,7 +86,7 @@ body {
 
 .conversation.expanded {
   color: var(--vscode-list-inactiveSelectionForeground);
-  background-color: var(--vscode-list-inactiveSelectionBackground);
+  background-color: transparent;
 }
 
 .conversation.expanded > .header {
@@ -133,7 +133,7 @@ body {
   border-radius: 5px;
   padding: 5px;
 
-  background-color: var(--vscode-sideBar-background);
+  background-color: var(--vscode-input-background);
 }
 
 /* Inspired from https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas */
@@ -160,7 +160,7 @@ body {
   display: block;
   width: 100%;
   border: none;
-  background-color: var(--vscode-sideBar-background);
+  background-color: var(--vscode-input-background);
   color: var(--vscode-input-foreground);
 
   padding: var(--input-padding-vertical) var(--input-padding-horizontal);
@@ -314,6 +314,7 @@ span.error-retry:hover {
   cursor: pointer;
   border-radius: 5px;
   padding: 3px;
+  transition: color 0.1s ease-in-out;
 }
 
 .action-delete:hover,
