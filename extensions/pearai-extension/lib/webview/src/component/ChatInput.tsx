@@ -1,4 +1,6 @@
+import { webviewApi } from "@pearai/common";
 import React, { useCallback, useRef } from "react";
+import { CodeContext } from "./CodeContext";
 
 export const ChatInput: React.FC<{
 	placeholder?: string;
@@ -7,6 +9,7 @@ export const ChatInput: React.FC<{
 	onChange?: (text: string) => void;
 	onSubmit?: (text: string) => void;
 	shouldCreateNewLineOnEnter?: boolean;
+	codeContexts?: webviewApi.Selection[];
 }> = ({
 	placeholder,
 	disabled,
@@ -14,6 +17,7 @@ export const ChatInput: React.FC<{
 	onChange,
 	onSubmit,
 	shouldCreateNewLineOnEnter,
+	codeContexts,
 }) => {
 	// callback to automatically focus the input box
 	const callbackRef = useCallback((inputElement: HTMLTextAreaElement) => {
@@ -29,6 +33,10 @@ export const ChatInput: React.FC<{
 
 	return (
 		<div className="chat-input" ref={textareaWrapperRef}>
+			{codeContexts?.map((context: webviewApi.Selection, i) => (
+				<CodeContext selection={context} key={i} />
+			))}
+
 			<textarea
 				disabled={disabled}
 				ref={callbackRef}

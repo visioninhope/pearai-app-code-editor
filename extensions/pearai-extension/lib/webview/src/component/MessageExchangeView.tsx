@@ -61,6 +61,7 @@ export function MessageExchangeView({
 									onSendMessage(inputText);
 									setInputText("");
 								}}
+								codeContexts={content.codeContexts}
 							/>
 						);
 					default: {
