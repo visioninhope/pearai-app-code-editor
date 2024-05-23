@@ -1,7 +1,6 @@
 import { webviewApi } from "@pearai/common";
 import React from "react";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
 function getFileNameAndExtension(filePath: string) {
 	const fileNameWithExtension = filePath.split(/[/\\]/).pop() || "";
@@ -11,17 +10,18 @@ function getFileNameAndExtension(filePath: string) {
 	return { name, ext };
 }
 
-const extensionMap = new Map([
-	["js", "javascript"],
-	["ts", "typescript"],
-	["html", "html"],
-	["css", "css"],
-	["scss", "scss"],
-	["json", "json"],
-	["yaml", "yaml"],
-	["yml", "yaml"],
-	["md", "markdown"],
-]);
+const extensionMap: { [key: string]: string } = {
+	js: "javascript",
+	ts: "typescript",
+	json: "json",
+	py: "python",
+	java: "java",
+	cpp: "cpp",
+	c: "c",
+	cs: "csharp",
+	html: "html",
+	css: "css",
+};
 
 export const CodeContext: React.FC<{
 	selection?: webviewApi.Selection;
@@ -30,12 +30,12 @@ export const CodeContext: React.FC<{
 	const { name, ext } = getFileNameAndExtension(
 		selection?.filename || "bad.file"
 	);
-	const lang: string = extensionMap.get(ext) || "plaintext";
+	const lang: string = extensionMap[ext] || "plaintext";
 
 	return (
-		<div className="code-context">
+		<div className="syntax-highlighter-container">
 			{name}.{ext}
-			<SyntaxHighlighter language={lang} style={docco}>
+			<SyntaxHighlighter language={lang} showLineNumbers={true}>
 				{code}
 			</SyntaxHighlighter>
 		</div>

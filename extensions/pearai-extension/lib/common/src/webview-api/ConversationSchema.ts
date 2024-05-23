@@ -20,6 +20,7 @@ export type Message = zod.infer<typeof messageSchema>;
 const messageExchangeContentSchema = zod.object({
 	type: zod.literal("messageExchange"),
 	messages: zod.array(messageSchema),
+	codeContexts: zod.array(selectionSchema).optional(),
 	error: errorSchema.optional(),
 	state: zod.discriminatedUnion("type", [
 		zod.object({

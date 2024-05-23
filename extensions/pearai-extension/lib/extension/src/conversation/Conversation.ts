@@ -24,6 +24,7 @@ export class Conversation {
 	protected state: webviewApi.MessageExchangeContent["state"];
 	protected error: webviewApi.Error | undefined;
 	protected readonly messages: webviewApi.Message[];
+	protected readonly codeContexts: webviewApi.Selection[];
 	protected readonly updateChatPanel: () => Promise<void>;
 
 	protected readonly initVariables: Record<string, unknown>;
@@ -60,6 +61,7 @@ export class Conversation {
 		this.ai = ai;
 		this.updateChatPanel = updateChatPanel;
 		this.messages = [];
+		this.codeContexts = [];
 		this.initVariables = initVariables;
 
 		this.template = template;
@@ -70,9 +72,9 @@ export class Conversation {
 			template.initialMessage == null
 				? { type: "userCanReply" }
 				: {
-						type: "waitingForBotAnswer",
-						botAction: template.initialMessage.placeholder ?? "Answering",
-					};
+					type: "waitingForBotAnswer",
+					botAction: template.initialMessage.placeholder ?? "Answering",
+				};
 	}
 
 	async getTitle() {
@@ -166,6 +168,8 @@ export class Conversation {
 
 	private async executeChat() {
 		try {
+			this.clearCodeContext();
+
 			const prompt =
 				this.messages[0] == null && this.template.initialMessage != null
 					? this.template.initialMessage
@@ -463,6 +467,21 @@ export class Conversation {
 		await this.executeChat();
 	}
 
+	/**
+	 * Add context object to user input before message & update view
+	 * @param context Code snippets
+	 */
+	async addCodeContext(context: webviewApi.Selection) {
+		this.codeContexts.push(context)
+	}
+
+	/**
+	 * Clears any code context from the current conversation & update view
+	 */
+	async clearCodeContext() {
+		this.codeContexts.length = 0
+	}
+
 	protected async addUserMessage({
 		content,
 		botAction,
@@ -515,19 +534,20 @@ export class Conversation {
 			content:
 				chatInterface === "message-exchange"
 					? {
-							type: "messageExchange",
-							messages: this.isTitleMessage()
-								? this.messages.slice(1)
-								: this.messages,
-							state: this.state,
-							error: this.error,
-						}
+						type: "messageExchange",
+						messages: this.isTitleMessage()
+							? this.messages.slice(1)
+							: this.messages,
+						codeContexts: this.codeContexts,
+						state: this.state,
+						error: this.error,
+					}
 					: {
-							type: "instructionRefinement",
-							instruction: "", // TODO last user message?
-							state: this.refinementInstructionState(),
-							error: this.error,
-						},
+						type: "instructionRefinement",
+						instruction: "", // TODO last user message?
+						state: this.refinementInstructionState(),
+						error: this.error,
+					},
 		};
 	}
 

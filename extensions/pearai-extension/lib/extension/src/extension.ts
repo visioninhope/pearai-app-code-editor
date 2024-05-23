@@ -10,6 +10,7 @@ import { indexRepository } from "./index/indexRepository";
 import { getVSCodeLogLevel, LoggerUsingVSCodeOutput } from "./logger";
 
 export const activate = async (context: vscode.ExtensionContext) => {
+	console.log("pearai activated")
 	const apiKeyManager = new ApiKeyManager({
 		secretStorage: context.secrets,
 	});
@@ -95,6 +96,8 @@ export const activate = async (context: vscode.ExtensionContext) => {
 			chatController.createConversation("generate-unit-test");
 		}),
 		vscode.commands.registerCommand("pearai.startChat", () => {
+			console.log("received start chat directive")
+
 			chatController.createConversation("chat-en");
 		}),
 		vscode.commands.registerCommand("pearai.editCode", () => {

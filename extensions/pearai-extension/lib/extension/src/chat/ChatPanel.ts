@@ -106,6 +106,10 @@ export class ChatPanel implements vscode.WebviewViewProvider {
 			conversations.push(await conversation.toWebviewConversation());
 		}
 
+		if (conversations.length > 0) {
+			console.log('updated conv: ', conversations[conversations.length - 1]);
+		}
+
 		const surfacePromptForOpenAIPlus = getConfigSurfacePromptForOpenAIPlus();
 		const hasOpenAIApiKey = await this.apiKeyManager.hasOpenAIApiKey();
 		this.state = {

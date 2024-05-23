@@ -128,6 +128,9 @@ export class ChatController {
 	}
 
 	async createConversation(conversationTypeId: string) {
+		console.log("creating new conversation");
+
+
 		try {
 			const conversationType = this.getConversationType(conversationTypeId);
 
@@ -160,6 +163,31 @@ export class ChatController {
 				}
 
 				return;
+			}
+
+			// get selection if avaialble
+			if (vscode.window.activeTextEditor) {
+				const editor = vscode.window.activeTextEditor;
+
+				if (editor &&
+					editor.selection.end.isEqual(editor.selection.start) === false
+				) {
+					const selection = editor.selection
+					const text = editor.document.getText(
+						selection
+					).trim()
+
+					console.log("selection: ", selection);
+
+					const viewableContext: webviewApi.Selection = {
+						filename: editor.document.fileName,
+						text: text,
+						startLine: selection.start.line,
+						endLine: selection.end.line,
+					}
+
+					result.conversation.addCodeContext(viewableContext)
+				}
 			}
 
 			await this.addAndShowConversation(result.conversation);
