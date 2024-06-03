@@ -195,6 +195,27 @@ function computeChecksum(filename) {
 	return hash;
 }
 
+function injectCoreExtension(platform, arch, destinationFolderName, opts) {
+	return () => {
+		if (platform === 'darwin') {
+			const exec = require('child_process').exec;
+			const absolutePath = path.resolve(__dirname, "../../", destinationFolderName, 'PearAI.app/Contents/Resources/app/extensions');
+			console.log("88888!", absolutePath)
+
+			exec(`npm run package-app-release ${absolutePath}`,
+			{ cwd: path.resolve(__dirname, '../extensions/pearai-submodule/extensions/vscode') },
+			(error, stdout, stderr) => {
+				if (error) {
+				console.error(`exec error: ${error}`);
+				return;
+				}
+				console.log(`stdout: ${stdout}`);
+				console.error(`stderr: ${stderr}`);
+			});
+		}
+	}
+}
+
 function packageTask(platform, arch, sourceFolderName, destinationFolderName, opts) {
 	opts = opts || {};
 
@@ -441,11 +462,12 @@ BUILD_TARGETS.forEach(buildTarget => {
 
 	const [vscode, vscodeMin] = ['', 'min'].map(minified => {
 		const sourceFolderName = `out-vscode${dashed(minified)}`;
-		const destinationFolderName = `VSCode${dashed(platform)}${dashed(arch)}`;
+		const destinationFolderName = `PearAI${dashed(platform)}${dashed(arch)}`;
 
 		const tasks = [
 			util.rimraf(path.join(buildRoot, destinationFolderName)),
-			packageTask(platform, arch, sourceFolderName, destinationFolderName, opts)
+			packageTask(platform, arch, sourceFolderName, destinationFolderName, opts),
+			injectCoreExtension(platform, arch, destinationFolderName, opts)
 		];
 
 		if (platform === 'win32') {
