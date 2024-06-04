@@ -146,7 +146,7 @@ stages:
               TargetPattern: "guardianGlob"
               AnalyzeIgnorePdbLoadError: true
               AnalyzeTargetGlob: '$(agent.builddirectory)\scanbin\**.dll;$(agent.builddirectory)\scanbin\**.exe;$(agent.builddirectory)\scanbin\**.node'
-              AnalyzeLocalSymbolDirectories: '$(agent.builddirectory)\scanbin\VSCode-win32-$(VSCODE_ARCH)\pdb'
+              AnalyzeLocalSymbolDirectories: '$(agent.builddirectory)\scanbin\PearAI-win32-$(VSCODE_ARCH)\pdb'
 
           - task: AntiMalware@4
             inputs:
@@ -289,7 +289,7 @@ stages:
             inputs:
               toolVersion: Latest
               InputType: CommandLine
-              arguments: analyze $(agent.builddirectory)\scanbin\exe\*.* --recurse --local-symbol-directories $(agent.builddirectory)\scanbin\VSCode-linux-$(VSCODE_ARCH)\pdb
+              arguments: analyze $(agent.builddirectory)\scanbin\exe\*.* --recurse --local-symbol-directories $(agent.builddirectory)\scanbin\PearAI-linux-$(VSCODE_ARCH)\pdb
 
           - task: TSAUpload@2
             inputs:

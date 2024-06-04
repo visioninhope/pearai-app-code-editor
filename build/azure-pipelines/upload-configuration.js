@@ -32,7 +32,7 @@ function generateVSCodeConfigurationTask() {
         const userDataDir = path.join(os.tmpdir(), 'tmpuserdata');
         const extensionsDir = path.join(os.tmpdir(), 'tmpextdir');
         const arch = process.env['VSCODE_ARCH'];
-        const appRoot = path.join(buildDir, `VSCode-darwin-${arch}`);
+        const appRoot = path.join(buildDir, `PearAI-darwin-${arch}`);
         const appName = process.env.VSCODE_QUALITY === 'insider' ? 'Visual\\ Studio\\ Code\\ -\\ Insiders.app' : 'Visual\\ Studio\\ Code.app';
         const appPath = path.join(appRoot, appName, 'Contents', 'Resources', 'app', 'bin', 'code');
         const codeProc = cp.exec(`${appPath} --export-default-configuration='${result}' --wait --user-data-dir='${userDataDir}' --extensions-dir='${extensionsDir}'`, (err, stdout, stderr) => {

@@ -145,7 +145,7 @@ steps:
         exec { yarn gulp "vscode-win32-$(VSCODE_ARCH)-min-ci" }
         exec { yarn gulp "vscode-win32-$(VSCODE_ARCH)-inno-updater" }
         echo "##vso[task.setvariable variable=BUILT_CLIENT]true"
-        echo "##vso[task.setvariable variable=CodeSigningFolderPath]$(agent.builddirectory)/VSCode-win32-$(VSCODE_ARCH)"
+        echo "##vso[task.setvariable variable=CodeSigningFolderPath]$(agent.builddirectory)/PearAI-win32-$(VSCODE_ARCH)"
       env:
         GITHUB_TOKEN: "$(github-distro-mixin-password)"
       displayName: Build client
@@ -198,10 +198,10 @@ steps:
           $ErrorActionPreference = "Stop"
           $ArtifactName = (gci -Path "$(Build.ArtifactStagingDirectory)/cli" | Select-Object -last 1).FullName
           Expand-Archive -Path $ArtifactName -DestinationPath "$(Build.ArtifactStagingDirectory)/cli"
-          $AppProductJson = Get-Content -Raw -Path "$(agent.builddirectory)\VSCode-win32-$(VSCODE_ARCH)\resources\app\product.json" | ConvertFrom-Json
+          $AppProductJson = Get-Content -Raw -Path "$(agent.builddirectory)\PearAI-win32-$(VSCODE_ARCH)\resources\app\product.json" | ConvertFrom-Json
           $CliAppName = $AppProductJson.tunnelApplicationName
           $AppName = $AppProductJson.applicationName
-          Move-Item -Path "$(Build.ArtifactStagingDirectory)/cli/$AppName.exe" -Destination "$(agent.builddirectory)/VSCode-win32-$(VSCODE_ARCH)/bin/$CliAppName.exe"
+          Move-Item -Path "$(Build.ArtifactStagingDirectory)/cli/$AppName.exe" -Destination "$(agent.builddirectory)/PearAI-win32-$(VSCODE_ARCH)/bin/$CliAppName.exe"
         displayName: Move VS Code CLI
 
       - task: UseDotNet@2
@@ -231,7 +231,7 @@ steps:
 
     - ${{ if ne(parameters.VSCODE_QUALITY, 'oss') }}:
       - powershell: |
-          $PackageJson = Get-Content -Raw -Path ..\VSCode-win32-$(VSCODE_ARCH)\resources\app\package.json | ConvertFrom-Json
+          $PackageJson = Get-Content -Raw -Path ..\PearAI-win32-$(VSCODE_ARCH)\resources\app\package.json | ConvertFrom-Json
           $Version = $PackageJson.version
           echo "##vso[task.setvariable variable=VSCODE_VERSION]$Version"
         condition: succeededOrFailed()
@@ -240,9 +240,9 @@ steps:
       - powershell:  |
           . build/azure-pipelines/win32/exec.ps1
           $ErrorActionPreference = "Stop"
-          $ArchivePath = ".build\win32-$(VSCODE_ARCH)\VSCode-win32-$(VSCODE_ARCH)-$(VSCODE_VERSION).zip"
+          $ArchivePath = ".build\win32-$(VSCODE_ARCH)\PearAI-win32-$(VSCODE_ARCH)-$(VSCODE_VERSION).zip"
           New-Item -ItemType Directory -Path .build\win32-$(VSCODE_ARCH) -Force
-          exec { 7z.exe a -tzip $ArchivePath -x!CodeSignSummary*.md ..\VSCode-win32-$(VSCODE_ARCH)\* -r }
+          exec { 7z.exe a -tzip $ArchivePath -x!CodeSignSummary*.md ..\PearAI-win32-$(VSCODE_ARCH)\* -r }
           echo "##vso[task.setvariable variable=CLIENT_PATH]$ArchivePath"
         condition: and(succeededOrFailed(), eq(variables['BUILT_CLIENT'], 'true'))
         displayName: Package client
@@ -299,7 +299,7 @@ steps:
         inputs:
           targetPath: $(CLIENT_PATH)
           artifactName: $(ARTIFACT_PREFIX)vscode_client_win32_$(VSCODE_ARCH)_archive
-          sbomBuildDropPath: $(Agent.BuildDirectory)/VSCode-win32-$(VSCODE_ARCH)
+          sbomBuildDropPath: $(Agent.BuildDirectory)/PearAI-win32-$(VSCODE_ARCH)
           sbomPackageName: "VS Code Windows $(VSCODE_ARCH)"
           sbomPackageVersion: $(Build.SourceVersion)
         condition: and(succeededOrFailed(), ne(variables['CLIENT_PATH'], ''))
@@ -329,7 +329,7 @@ steps:
         inputs:
           targetPath: $(SYSTEM_SETUP_PATH)
           artifactName: $(ARTIFACT_PREFIX)vscode_client_win32_$(VSCODE_ARCH)_setup
-          sbomBuildDropPath: $(Agent.BuildDirectory)/VSCode-win32-$(VSCODE_ARCH)
+          sbomBuildDropPath: $(Agent.BuildDirectory)/PearAI-win32-$(VSCODE_ARCH)
           sbomPackageName: "VS Code Windows $(VSCODE_ARCH) System Setup"
           sbomPackageVersion: $(Build.SourceVersion)
         condition: and(succeededOrFailed(), ne(variables['SYSTEM_SETUP_PATH'], ''))
@@ -339,7 +339,7 @@ steps:
         inputs:
           targetPath: $(USER_SETUP_PATH)
           artifactName: $(ARTIFACT_PREFIX)vscode_client_win32_$(VSCODE_ARCH)_user-setup
-          sbomBuildDropPath: $(Agent.BuildDirectory)/VSCode-win32-$(VSCODE_ARCH)
+          sbomBuildDropPath: $(Agent.BuildDirectory)/PearAI-win32-$(VSCODE_ARCH)
           sbomPackageName: "VS Code Windows $(VSCODE_ARCH) User Setup"
           sbomPackageVersion: $(Build.SourceVersion)
         condition: and(succeededOrFailed(), ne(variables['USER_SETUP_PATH'], ''))

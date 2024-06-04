@@ -32,7 +32,7 @@ function getDebPackageArch(arch) {
 }
 
 function prepareDebPackage(arch) {
-	const binaryDir = '../VSCode-linux-' + arch;
+	const binaryDir = '../PearAI-linux-' + arch;
 	const debArch = getDebPackageArch(arch);
 	const destination = '.build/linux/deb/' + debArch + '/' + product.applicationName + '-' + debArch;
 
@@ -141,7 +141,7 @@ function getRpmPackageArch(arch) {
  * @param {string} arch
  */
 function prepareRpmPackage(arch) {
-	const binaryDir = '../VSCode-linux-' + arch;
+	const binaryDir = '../PearAI-linux-' + arch;
 	const rpmArch = getRpmPackageArch(arch);
 
 	return function () {
@@ -239,7 +239,7 @@ function getSnapBuildPath(arch) {
  * @param {string} arch
  */
 function prepareSnapPackage(arch) {
-	const binaryDir = '../VSCode-linux-' + arch;
+	const binaryDir = '../PearAI-linux-' + arch;
 	const destination = getSnapBuildPath(arch);
 
 	return function () {

@@ -161,7 +161,7 @@ steps:
 
   - script: |
       set -e
-      tar -czf $CLIENT_PATH -C .. VSCode-linux-$(VSCODE_ARCH)
+      tar -czf $CLIENT_PATH -C .. PearAI-linux-$(VSCODE_ARCH)
     env:
       GITHUB_TOKEN: "$(github-distro-mixin-password)"
     displayName: Archive client

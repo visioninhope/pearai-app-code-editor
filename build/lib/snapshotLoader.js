@@ -17,13 +17,13 @@ var snaps;
     let startupBlobFilepath;
     switch (process.platform) {
         case 'darwin':
-            loaderFilepath = `VSCode-darwin/${product.nameLong}.app/Contents/Resources/app/out/vs/loader.js`;
-            startupBlobFilepath = `VSCode-darwin/${product.nameLong}.app/Contents/Frameworks/Electron Framework.framework/Resources/snapshot_blob.bin`;
+            loaderFilepath = `PearAI-darwin/${product.nameLong}.app/Contents/Resources/app/out/vs/loader.js`;
+            startupBlobFilepath = `PearAI-darwin/${product.nameLong}.app/Contents/Frameworks/Electron Framework.framework/Resources/snapshot_blob.bin`;
             break;
         case 'win32':
         case 'linux':
-            loaderFilepath = `VSCode-${process.platform}-${arch}/resources/app/out/vs/loader.js`;
-            startupBlobFilepath = `VSCode-${process.platform}-${arch}/snapshot_blob.bin`;
+            loaderFilepath = `PearAI-${process.platform}-${arch}/resources/app/out/vs/loader.js`;
+            startupBlobFilepath = `PearAI-${process.platform}-${arch}/snapshot_blob.bin`;
             break;
         default:
             throw new Error('Unknown platform');
