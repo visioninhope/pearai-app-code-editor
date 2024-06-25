@@ -15,6 +15,7 @@ You'll need the following tools:
 - [Git](https://git-scm.com)
 - [Node.JS](https://nodejs.org/en/), **x64**, version `=20.X.X`
 - [Yarn 1](https://classic.yarnpkg.com/en/), version `>=1.10.1 and <2`, follow the [installation guide](https://classic.yarnpkg.com/en/docs/install)
+- [Rust](https://www.rust-lang.org/)
 - [Python](https://www.python.org/downloads/) (required for node-gyp; check the [node-gyp readme](https://github.com/nodejs/node-gyp#installation) for the currently supported Python versions)
   - **Note:** Python will be automatically installed for Windows users through installing `windows-build-tools` npm module (see below)
 - A C/C++ compiler tool chain for your platform:
