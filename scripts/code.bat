@@ -24,10 +24,10 @@ set ELECTRON_ENABLE_LOGGING=1
 set ELECTRON_ENABLE_STACK_DUMPING=1
 
 :: Get Pear AI
-setlocal
-cd extensions/pearai-submodule
-powershell.exe -executionpolicy bypass -file .\scripts\build-extension.ps1
-endlocal
+::setlocal
+::cd extensions/pearai-submodule
+::powershell.exe -executionpolicy bypass -file .\scripts\build-extension.ps1
+::endlocal
 
 :: Launch Code
 

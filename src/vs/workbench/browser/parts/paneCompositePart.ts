@@ -41,6 +41,14 @@ import { createAndFillInActionBarActions } from 'vs/platform/actions/browser/men
 import { IHoverService } from 'vs/platform/hover/browser/hover';
 import { HiddenItemStrategy, WorkbenchToolBar } from 'vs/platform/actions/browser/toolbar';
 
+import * as React from 'react';
+import {createRoot} from 'react-dom/client';
+
+// hail mary
+import App from "../../../../../extensions/pearai-submodule/gui/src/App";
+
+
+
 export enum CompositeBarPosition {
 	TOP,
 	TITLE,
@@ -121,6 +129,7 @@ export abstract class AbstractPaneCompositePart extends CompositePart<PaneCompos
 	private readonly paneCompositeBar = this._register(new MutableDisposable<PaneCompositeBar>());
 	private compositeBarPosition: CompositeBarPosition | undefined = undefined;
 	private emptyPaneMessageElement: HTMLElement | undefined;
+	private pearAIChatPaneElement: HTMLElement | undefined;
 
 	private globalToolBar: WorkbenchToolBar | undefined;
 	private readonly globalActions: CompositeMenuActions;
@@ -250,6 +259,11 @@ export abstract class AbstractPaneCompositePart extends CompositePart<PaneCompos
 			this.createEmptyPaneMessage(contentArea);
 		}
 
+		const chatArea = this.getContentArea();
+		if (chatArea) {
+			this.createPearAIView(chatArea)
+		}
+
 		this.updateCompositeBar();
 
 		const focusTracker = this._register(trackFocus(parent));
@@ -257,6 +271,15 @@ export abstract class AbstractPaneCompositePart extends CompositePart<PaneCompos
 		this._register(focusTracker.onDidBlur(() => this.paneFocusContextKey.set(false)));
 	}
 
+	private createPearAIView(parent: HTMLElement): void {
+		this.pearAIChatPaneElement = document.createElement('div');
+		this.pearAIChatPaneElement.classList.add('ai-chat-pane'); //TODO style this later
+
+		const chatPaneRoot = createRoot(document.getElementById('ai-chat-pane'))
+		chatPaneRoot.render(React.createElement(App))
+		parent.append(this.pearAIChatPaneElement);
+	}
+	
 	private createEmptyPaneMessage(parent: HTMLElement): void {
 		this.emptyPaneMessageElement = document.createElement('div');
 		this.emptyPaneMessageElement.classList.add('empty-pane-message-area');
